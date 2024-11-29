@@ -1,0 +1,14 @@
+import { Router } from 'express';
+import { authenticate } from '../middleware/authenticate.js';
+import { validateRequest } from '../middleware/validateRequest.js';
+import { projectSchema, apiKeySchema } from '../schemas/project.js';
+import { createProject, getProjects, getProject, updateProject, deleteProject, regenerateApiKey } from '../controllers/projects.js';
+const router = Router();
+router.use(authenticate);
+router.post('/', validateRequest(projectSchema), createProject);
+router.get('/', getProjects);
+router.get('/:projectId', getProject);
+router.put('/:projectId', validateRequest(projectSchema), updateProject);
+router.delete('/:projectId', deleteProject);
+router.post('/:projectId/keys', validateRequest(apiKeySchema), regenerateApiKey);
+export { router as projectsRouter };
